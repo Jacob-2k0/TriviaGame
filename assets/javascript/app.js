@@ -1,5 +1,5 @@
 
-    var counter = 10;
+    var counter = 60;
     setInterval(function(){
         if(counter > 0) {
         counter--;
