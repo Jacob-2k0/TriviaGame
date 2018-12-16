@@ -17,56 +17,24 @@
     <script src="assets/javascript/app.js"></script>
 
   <div class="text-center">
-    <div id="header">
-        <h1 id="head">Trivia Game</h1>
+    <div class="jumbotron">
+        <h1 id="head">Trivia Game</h1><hr>
     </div>
-    <p id="demo">Time Remaining: 60 Seconds</p>
-    <div id="questions">
+    <div id="questions"></div>
+    <div id="results"></div>
 
-    <h2>What colour is a banana?</h2>
-    <form>
-        <input type="radio" name="q1" value="Green">Green
-        <input type="radio" name="q1" value="Orange">Orange
-        <input type="radio" name="q1" value="Yellow">Yellow
-        <input type="radio" name="q1" value="Black">Black
-    </form>
-
-    <h2>What colour is a peach?</h2>
-    <form >
-        <input type="radio" name="q2" value="Green">Green
-        <input type="radio" name="q2" value="Orange">Orange
-        <input type="radio" name="q2" value="Yellow">Yellow
-        <input type="radio" name="q2" value="Black">Black
-    </form>
-
-    <h2>What colour is an avocado?</h2>
-    <form >
-        <input type="radio" name="q2" value="Green">Green
-        <input type="radio" name="q2" value="Orange">Orange
-        <input type="radio" name="q2" value="Yellow">Yellow
-        <input type="radio" name="q2" value="Black">Black
-    </form>
-
-    <h2>What colour is a lime?</h2>
-    <form >
-        <input type="radio" name="q2" value="Green">Green
-        <input type="radio" name="q2" value="Orange">Orange
-        <input type="radio" name="q2" value="Yellow">Yellow
-        <input type="radio" name="q2" value="Lime">Lime Green
-    </form>
-
-    <button onclick="submitAnswer()">Submit Answer</button>
-
-    </div>
-
-    <div id="results">
-
-    <h4 id="correct"></h4>
-    <h4 id="incorrect"></h4>
-    <h4 id="unAnswered"></h4>
-
-    </div>
-    
+      
+        <div class="quizContainer">
+           <h1>Best of luck to you!</h1>
+   
+           <div class="question"></div>
+           <ul class="choiceList"></ul>
+           <div class="quizMessage"></div>
+           <div class="result"></div>
+           <div class="nextButton">Next Question</div>
+           <br>
+       </div>
+      
   </div>
   
 </body>

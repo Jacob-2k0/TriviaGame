@@ -1,105 +1,109 @@
 
-    var counter = 60;
-    setInterval(function(){
-        if(counter > 0) {
-        counter--;
-        $("#demo").html("<p>Time Remaining: " + counter + " Seconds</p>");
-        }else if(counter === 0) {
-            submitAnswer();
-        }
-    }, 1000);
+var questions = [{
+    question: "What colour is a peach?",
+    choices: ["Red", "Green", "Orange", "Blue"],
+    correctAnswer: 2
+}, {
+    question: "How much wood could a woodchuck chuck in lbs?",
+    choices: ["485", "634", "408", "700"],
+    correctAnswer: 3
+}, {
+    question: "How long is the Severn Tunnel?",
+    choices: ["7km", "11km", "4km", "14km"],
+    correctAnswer: 0
+}, {
+    question: "What is the longest river?",
+    choices: ["Nile", "Amazon", "Mississippi", "Yangtze"],
+    correctAnswer: 1
+}, {
+    question: "Johnny’s mother had three children. The first child was named April. The second child was named May. What was the third child’s name?",
+    choices: ["June", "Ben", "Johnny", "Victoria"],
+    correctAnswer: 2
+}];
 
-  function submitAnswer() {
+var currentQuestion = 0;
+var correctAnswers = 0;
+var quizOver = false;
 
-      var unAnswered = 0;
-      var correct = 0;
-      var incorrect = 0;
-      $("input").attr('disabled','disabled');
+$(document).ready(function () {
 
-      var q1 = document.getElementsByName("q1");
-      var len1 = q1.length;
-      var checked = false ;
-      var q1Answer;
+    // Display the first question
+    displayCurrentQuestion();
+    $(this).find(".quizMessage").hide();
 
-      for (var i = 0; i < len1 ; i++) {
-          if ( q1[i].checked) {
-              checked = true;
-              q1Answer = q1[i].value;
-          }
-      }
+    // On clicking next, display the next question
+    $(this).find(".nextButton").on("click", function () {
+        if (!quizOver) {
 
-      if ( !checked ) {
-        unAnswered++;
-      } else if ( q1Answer === "Yellow") {
-            correct++;
-      } else {
-            incorrect++;
-      }
+            value = $("input[type='radio']:checked").val();
 
-      var q2 = document.getElementsByName("q2");
-      var len2 = q2.length;
-      var q2Answer;
+            if (value == undefined) {
+                $(document).find(".quizMessage").text("Please select an answer");
+                $(document).find(".quizMessage").show();
+            } else {
+                // TODO: Remove any message -> not sure if this is efficient to call this each time....
+                $(document).find(".quizMessage").hide();
 
-      checked = false ;
+                if (value == questions[currentQuestion].correctAnswer) {
+                    correctAnswers++;
+                }
 
-      for ( i = 0; i < len2 ; i++) {
-            if ( q2[i].checked) {
-                checked = true;
-                q2Answer = q2[i].value;
+                currentQuestion++; // Since we have already displayed the first question on DOM ready
+                if (currentQuestion < questions.length) {
+                    displayCurrentQuestion();
+                } else {
+                    displayScore();
+                    //                    $(document).find(".nextButton").toggle();
+                    //                    $(document).find(".playAgainButton").toggle();
+                    // Change the text in the next button to ask if user wants to play again
+                    $(document).find(".nextButton").text("Play Again?");
+                    quizOver = true;
+                }
             }
+        } else { // quiz is over and clicked the next button (which now displays 'Play Again?'
+            quizOver = false;
+            $(document).find(".nextButton").text("Next Question");
+            resetQuiz();
+            displayCurrentQuestion();
+            hideScore();
         }
+    });
 
-      if ( !checked ) {
-        unAnswered++;
-      } else if ( q2Answer === "Orange") {
-          correct++;
-      } else {
-          incorrect++;
-      }
+});
 
-      var q3 = document.getElementsByName("q3");
-      var len3 = q3.length;
-      var q3Answer;
+// Writes current question to the quiz container
+function displayCurrentQuestion() {
 
-      checked = false ;
+    console.log("In display current Question");
 
-      for ( i = 0; i < len3 ; i++) {
-            if ( q3[i].checked) {
-                checked = true;
-                q3Answer = q3[i].value;
-            }
-        }
+    var question = questions[currentQuestion].question;
+    var questionClass = $(document).find(".quizContainer > .question");
+    var choiceList = $(document).find(".quizContainer > .choiceList");
+    var numChoices = questions[currentQuestion].choices.length;
 
-      if ( !checked ) {
-        unAnswered++;
-      } else if ( q3Answer === "Green") {
-          correct++;
-      } else {
-          incorrect++;
-      }
+    $(questionClass).text(question);
 
-      var q4 = document.getElementsByName("q4");
-      var len4 = q4.length;
-      var q4Answer;
+    // If the previous question is on the page then remove it
+    $(choiceList).find("li").remove();
 
-      checked = false ;
+    var choice;
+    for (i = 0; i < numChoices; i++) {
+        choice = questions[currentQuestion].choices[i];
+        $('<li><input type="radio" value=' + i + ' name="dynradio" />' + choice + '</li>').appendTo(choiceList);
+    }
+}
 
-      for ( i = 0; i < len4 ; i++) {
-            if ( q4[i].checked) {
-                checked = true;
-                q4Answer = q4[i].value;
-            }
-        }
+function resetQuiz() {
+    currentQuestion = 0;
+    correctAnswers = 0;
+    hideScore();
+}
 
-      if ( !checked ) {
-        unAnswered++;
-      } else if ( q4Answer === "Lime") {
-          correct++;
-      } else {
-          incorrect++;
-      }
+function displayScore() {
+    $(document).find(".quizContainer > .result").text("You scored: " + correctAnswers + " out of: " + questions.length);
+    $(document).find(".quizContainer > .result").show();
+}
 
-      $("#correct").html("You got " + correct + " questions correct.");
-      $("#incorrect").html("You got " + incorrect + " questions incorrect.");
-      $("#unAnswered").html("You left " + unAnswered + " questions unanswered.");
+function hideScore() {
+    $(document).find(".result").hide();
 }
